@@ -39,11 +39,17 @@
         
         loadDiv.style.display = 'none';
         if(result.isAuth) {
+          // 認証成功時：エラー画面やロード画面（もしあれば）を隠し、クイズ画面を表示する
+          document.getElementById('error-area').style.display = 'none';
           document.getElementById('quiz-area').style.display = 'block';
+          
+          // ★もしクイズエリアの中に何も書いていない場合は、一旦以下のテスト文字を表示させる
+          document.getElementById('quiz-area').innerHTML = "<h2>クイズ画面へようこそ！</h2><p>ここに問題が表示されます。</p>";
         } else {
+          // 認証失敗時
+          document.getElementById('quiz-area').style.display = 'none';
           document.getElementById('error-area').style.display = 'block';
-          // ★調査情報を再表示する
-          document.getElementById('error-area').innerHTML = "<h2 style='color:red;'>権限がありません</h2><p style='font-size:12px; color:gray;'>調査情報: " + result.debug_msg + "</p>";
+          document.getElementById('error-area').innerHTML = "<h2 style='color:red;'>権限がありません</h2><p>有料プランの登録が必要です。</p>";
         }
       } catch (e) {
         loadDiv.innerHTML = `<h2 style='color:red;'>重大なエラー: ${e.message}</h2>`;

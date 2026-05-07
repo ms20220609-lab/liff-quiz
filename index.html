@@ -42,8 +42,8 @@
           document.getElementById('quiz-area').style.display = 'block';
         } else {
           document.getElementById('error-area').style.display = 'block';
-          // ↓ UIDの表示を消し、GASからの調査メッセージを表示させる
-          document.getElementById('error-area').innerHTML = "<h2 style='color:red;'>権限がありません</h2><p>調査情報: " + result.debug_msg + "</p>";
+          // ★調査情報を再表示する
+          document.getElementById('error-area').innerHTML = "<h2 style='color:red;'>権限がありません</h2><p style='font-size:12px; color:gray;'>調査情報: " + result.debug_msg + "</p>";
         }
       } catch (e) {
         loadDiv.innerHTML = `<h2 style='color:red;'>重大なエラー: ${e.message}</h2>`;

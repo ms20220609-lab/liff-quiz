@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>医療クイズ - 認証</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <div id="loading"><h2>1. 画面ロード完了...</h2></div>
+  <div id="quiz-area" style="display:none;"><h2>認証成功！ようこそ！</h2></div>
+  <div id="error-area" style="display:none;"><h2 style="color:red;">権限がありません</h2></div>
+
+  <script>
+    // ★あなたのLIFF ID
+    const MY_LIFF_ID = "2009990487-4O047QXv";
+    
+    // ★フェーズ1でコピーしたGASのウェブアプリURLをここに入れる！
+    const GAS_URL = "https://script.google.com/macros/s/ここにURLを入れる/exec"; 
+    
+    const loadDiv = document.getElementById('loading');
+
+    async function main() {
+      try {
+        loadDiv.innerHTML = "<h2>2. LIFF初期化中...</h2>";
+        await liff.init({ liffId: MY_LIFF_ID });
+        
+        if (!liff.isLoggedIn()) {
+          loadDiv.innerHTML = "<h2>LINEアプリから開いてください。</h2>";
+          return;
+        }
+
+        loadDiv.innerHTML = "<h2>3. UID取得完了...通信開始します</h2>";
+        const uid = liff.getContext().userId;
+        
+        // GAS APIへ通信（Fetch）
+        const response = await fetch(`${GAS_URL}?uid=${uid}`);
+        const result = await response.json();
+        
+        loadDiv.style.display = 'none';
+        if(result.isAuth) {
+          document.getElementById('quiz-area').style.display = 'block';
+        } else {
+          document.getElementById('error-area').style.display = 'block';
+        }
+      } catch (e) {
+        loadDiv.innerHTML = `<h2 style='color:red;'>重大なエラー: ${e.message}</h2>`;
+      }
+    }
+    
+    main();
+  </script>
+</body>
+</html>

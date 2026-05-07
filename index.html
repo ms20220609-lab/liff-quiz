@@ -42,6 +42,8 @@
           document.getElementById('quiz-area').style.display = 'block';
         } else {
           document.getElementById('error-area').style.display = 'block';
+          // ★この1行を追加して、画面にUIDを表示させる
+          document.getElementById('error-area').innerHTML += "<p>あなたのUID: " + uid + "</p>";
         }
       } catch (e) {
         loadDiv.innerHTML = `<h2 style='color:red;'>重大なエラー: ${e.message}</h2>`;
